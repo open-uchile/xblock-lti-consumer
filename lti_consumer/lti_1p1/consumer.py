@@ -177,6 +177,11 @@ class LtiConsumer1p1:
             self.lti_user_data.update({
                 'lis_person_sourcedid': person_sourcedid,
             })
+            # EOL: Also set lis_person_name_full as the username, as perusall requires it
+            self.lti_user_data.update({
+                'lis_person_name_full': person_sourcedid,
+            })
+            # EOL/
 
         if person_contact_email_primary:
             self.lti_user_data.update({
