@@ -796,6 +796,9 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
                 custom_parameters[param_name] = param_value
 
         custom_parameters['custom_component_display_name'] = str(self.display_name)
+        # EOL: Perusall require display_name to be appended using resource_link_title
+        custom_parameters['resource_link_title'] = str(self.display_name)
+        # EOL
 
         if self.due:  # pylint: disable=no-member
             custom_parameters.update({
