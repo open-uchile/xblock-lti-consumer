@@ -417,14 +417,14 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         default=False,
         scope=Scope.settings
     )
-    weight = Float(
+    weight = Integer(
         display_name="Weight",
         help=_(
             "Enter the number of points possible for this component.  "
             "The default value is 1.0.  "
             "This setting is only used when Scored is set to True."
         ),
-        default=1.0,
+        default=1,
         scope=Scope.settings,
         values={"min": 0},
     )

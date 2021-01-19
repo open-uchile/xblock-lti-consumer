@@ -933,16 +933,16 @@ class TestMaxScore(TestLtiConsumerXBlock):
         Test `max_score` when has_score is True
         """
         self.xblock.has_score = True
-        self.xblock.weight = 1.0
+        self.xblock.weight = 1
 
-        self.assertEqual(self.xblock.max_score(), 1.0)
+        self.assertEqual(self.xblock.max_score(), 1)
 
     def test_max_score_when_not_scored(self):
         """
         Test `max_score` when has_score is False
         """
         self.xblock.has_score = False
-        self.xblock.weight = 1.0
+        self.xblock.weight = 1
 
         self.assertIsNone(self.xblock.max_score())
 
