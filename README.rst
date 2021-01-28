@@ -7,6 +7,15 @@ LTI Consumer XBlock
 This XBlock implements the consumer side of the LTI specification enabling
 integration of third-party LTI provider tools.
 
+[EOL] Set platform LTI Secret Keys
+============
+
+LMS/CMS Django Admin ``/admin/site_configuration/siteconfiguration/``:
+
+.. code::
+
+    "EOL_LTI_SECRET_KEYS":["lti_id01:client_key01:client_secret01","lti_id02:client_key02:client_secret02"]
+
 Installation
 ============
 
