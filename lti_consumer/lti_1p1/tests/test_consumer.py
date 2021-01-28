@@ -219,7 +219,6 @@ class TestLtiConsumer1p1(unittest.TestCase):
         self.lti_consumer.set_custom_parameters(custom_parameters)
 
         lti_parameters = self.lti_consumer.generate_launch_request(resource_link_id)
-        self.maxDiff = None
         expected_lti_parameters = {
             'oauth_callback': 'about:blank',
             'launch_presentation_return_url': '',

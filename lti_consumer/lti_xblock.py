@@ -87,6 +87,7 @@ from .utils import (
     lti_1p3_enabled,
 )
 
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 
 log = logging.getLogger(__name__)
 
@@ -639,7 +640,10 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         """
         Obtains client_key and client_secret credentials from current course.
         """
-        for lti_passport in self.course.lti_passports:
+        LTI_SECRET_KEYS = configuration_helpers.get_value('EOL_LTI_SECRET_KEYS', []) # EOL Platform LTI Secret Keys
+        lti_passports = self.course.lti_passports
+        lti_passports.extend(LTI_SECRET_KEYS)
+        for lti_passport in lti_passports:
             try:
                 # NOTE While unpacking the lti_passport by using ":" as delimiter, first item will be lti_id,
                 #  last item will be client_secret and the rest are considered as client_key.

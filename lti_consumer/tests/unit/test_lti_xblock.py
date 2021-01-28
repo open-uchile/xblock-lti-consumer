@@ -155,11 +155,13 @@ class TestProperties(TestLtiConsumerXBlock):
         self.assertTrue(mock_get_course.called)
         self.assertIsNone(course)
 
+    @patch('openedx.core.djangoapps.site_configuration.helpers.get_value') # EOL
     @patch('lti_consumer.lti_xblock.LtiConsumerXBlock.course')
-    def test_lti_provider_key_secret(self, mock_course):
+    def test_lti_provider_key_secret(self, mock_course, eol_lti_secret_keys):
         """
         Test `lti_provider_key_secret` returns correct key and secret
         """
+        eol_lti_secret_keys.side_effect = [ [], ]
         provider = 'lti_provider'
         key = 'test'
         secret = 'secret'
@@ -170,11 +172,13 @@ class TestProperties(TestLtiConsumerXBlock):
         self.assertEqual(lti_provider_key, key)
         self.assertEqual(lti_provider_secret, secret)
 
+    @patch('openedx.core.djangoapps.site_configuration.helpers.get_value') # EOL
     @patch('lti_consumer.lti_xblock.LtiConsumerXBlock.course')
-    def test_lti_provider_key_with_extra_colons(self, mock_course):
+    def test_lti_provider_key_with_extra_colons(self, mock_course, eol_lti_secret_keys):
         """
         Test `lti_provider_key` returns correct key and secret, even if key has more colons.
         """
+        eol_lti_secret_keys.side_effect = [ [], ]
         provider = 'lti_provider'
         key = '1:10:test'
         secret = 'secret'
@@ -185,11 +189,13 @@ class TestProperties(TestLtiConsumerXBlock):
         self.assertEqual(lti_provider_key, key)
         self.assertEqual(lti_provider_secret, secret)
 
+    @patch('openedx.core.djangoapps.site_configuration.helpers.get_value') # EOL
     @patch('lti_consumer.lti_xblock.LtiConsumerXBlock.course')
-    def test_lti_provider_key_secret_not_found(self, mock_course):
+    def test_lti_provider_key_secret_not_found(self, mock_course, eol_lti_secret_keys):
         """
         Test `lti_provider_key_secret` returns correct key and secret
         """
+        eol_lti_secret_keys.side_effect = [ [], ]
         provider = 'lti_provider'
         key = 'test'
         secret = 'secret'
@@ -200,11 +206,13 @@ class TestProperties(TestLtiConsumerXBlock):
         self.assertEqual(lti_provider_key, '')
         self.assertEqual(lti_provider_secret, '')
 
+    @patch('openedx.core.djangoapps.site_configuration.helpers.get_value') # EOL
     @patch('lti_consumer.lti_xblock.LtiConsumerXBlock.course')
-    def test_lti_provider_key_secret_corrupt_lti_passport(self, mock_course):
+    def test_lti_provider_key_secret_corrupt_lti_passport(self, mock_course, eol_lti_secret_keys):
         """
         Test `lti_provider_key_secret` when a corrupt lti_passport is encountered
         """
+        eol_lti_secret_keys.side_effect = [ [], ]
         provider = 'lti_provider'
         key = 'test'
         secret = 'secret'
@@ -446,12 +454,14 @@ class TestGetLti1p1Consumer(TestLtiConsumerXBlock):
     """
     Unit tests for LtiConsumerXBlock._get_lti_consumer()
     """
+    @patch('openedx.core.djangoapps.site_configuration.helpers.get_value') # EOL
     @patch('lti_consumer.lti_xblock.LtiConsumerXBlock.course')
     @patch('lti_consumer.models.LtiConsumer1p1')
-    def test_lti_1p1_consumer_created(self, mock_lti_consumer, mock_course):
+    def test_lti_1p1_consumer_created(self, mock_lti_consumer, mock_course, eol_lti_secret_keys):
         """
         Test LtiConsumer1p1 is created with the launch_url, oauth_key, and oauth_secret
         """
+        eol_lti_secret_keys.side_effect = [ [], ]
         provider = 'lti_provider'
         key = 'test'
         secret = 'secret'
