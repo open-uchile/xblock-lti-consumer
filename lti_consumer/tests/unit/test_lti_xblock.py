@@ -296,7 +296,8 @@ class TestProperties(TestLtiConsumerXBlock):
             u'custom_component_graceperiod': str(one_day.total_seconds()),
             u'custom_param_1': u'true',
             u'custom_param_2': u'false',
-            u'lti_version': u'1.1'
+            u'lti_version': u'1.1',
+            u'resource_link_title': u'LTI Consumer'
         }
 
         params = self.xblock.prefixed_custom_parameters

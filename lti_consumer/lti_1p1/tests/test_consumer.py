@@ -219,7 +219,7 @@ class TestLtiConsumer1p1(unittest.TestCase):
         self.lti_consumer.set_custom_parameters(custom_parameters)
 
         lti_parameters = self.lti_consumer.generate_launch_request(resource_link_id)
-
+        self.maxDiff = None
         expected_lti_parameters = {
             'oauth_callback': 'about:blank',
             'launch_presentation_return_url': '',
@@ -244,6 +244,7 @@ class TestLtiConsumer1p1(unittest.TestCase):
             'oauth_signature_method': 'fake_method',
             'oauth_consumer_key': 'fake_consumer_key',
             'oauth_signature': 'fake_signature',
+            'lis_person_name_full': 'person_sourcedid'
         }
         self.assertEqual(lti_parameters, expected_lti_parameters)
 
