@@ -449,6 +449,12 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         default=False,
         scope=Scope.settings
     )
+    is_proctoring = Boolean(
+        display_name=_("Enable Proctoring"),
+        help=_("Select True to enable proctoring configuration."),
+        default=False,
+        scope=Scope.settings
+    )
     accept_grades_past_due = Boolean(
         display_name=_("Accept grades past deadline"),
         help=_("Select True to allow third party systems to post grades past the deadline."),
@@ -482,7 +488,7 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
 
     # Possible editable fields
     editable_field_names = (
-        'display_name', 'description',
+        'display_name', 'description', 'is_proctoring',
         # LTI 1.3 variables
         'lti_version', 'lti_1p3_launch_url', 'lti_1p3_oidc_url', 'lti_1p3_tool_public_key',
         # LTI 1.1 variables
@@ -720,8 +726,11 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         i4x-2-3-lti-31de800015cf4afb973356dbe81496df this part of resource_link_id:
         makes resource_link_id to be unique among courses inside same system.
         """
+        aux_hostname = self.runtime.hostname
+        if self.is_proctoring:
+            aux_hostname = self.replace_char(self.runtime.hostname)
         return str(urllib.parse.quote(
-            "{}-{}".format(self.runtime.hostname, self.location.html_id())  # pylint: disable=no-member
+            "{}-{}".format(aux_hostname, self.location.html_id())  # pylint: disable=no-member
         ))
 
     @property
@@ -969,8 +978,11 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
             person_sourcedid=username,
             person_contact_email_primary=email
         )
+        aux_context_id = self.context_id
+        if self.is_proctoring:
+            aux_context_id = self.replace_char(self.context_id)
         lti_consumer.set_context_data(
-            self.context_id,
+            aux_context_id,
             self.course.display_name_with_default,
             self.course.display_org_with_default
         )
@@ -989,6 +1001,15 @@ class LtiConsumerXBlock(StudioEditableXBlockMixin, XBlock):
         context.update({'lti_parameters': lti_parameters})
         template = loader.render_mako_template('/templates/html/lti_launch.html', context)
         return Response(template, content_type='text/html')
+
+    def replace_char(self, var_string):
+        """
+            Replace special character with "-"
+        """
+        var_string = var_string.replace(".","-")
+        var_string = var_string.replace(":","-")
+        var_string = var_string.replace("+","-")
+        return var_string
 
     @XBlock.handler
     def lti_1p3_launch_handler(self, request, suffix=''):
